@@ -60,11 +60,19 @@ class System
         end
     end
 
+    # マリガン時に残したいカード名と枚数をハッシュで指定(例:{"Wild Growth"=>2, "Nourish"=>1})
+    # 5枚の候補のうちどれでもいいからマリガン時に欲しい！ってこともあるので指定枚数は何枚でもOKとしとく
     # マリガンの際にデッキの戻したカードは引かないので、デッキに戻すのはカードを入れ替えた後
-    def mulligan(need_card_array)
+    def mulligan(need_card_hash)
         change_card_list = []
         2.downto(0) do |i|
-            next if need_card_array.include?(@hand[i].name)
+            if need_card_hash.keys.include?(@hand[i].name)
+                # 1枚キープしたらhashから指定のカードの枚数を減らす
+                need_card_hash[@hand[i].name] -= 1
+                # 0枚になったらハッシュから除く
+                need_card_hash.delete(@hand[i].name) if need_card_hash[@hand[i].name] == 0
+                next
+            end
             change_card_list << @hand[i]
             @hand.delete_at(i)
         end

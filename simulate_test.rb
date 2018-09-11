@@ -20,8 +20,8 @@ puts "*** show deck ***"
 system.show_deck
 =end
 
-# マリガンする。生物学プロジェクトと星霊交信とねりけはキープ
-system.mulligan(["Astral Communion","Biology Project","Innervate"])
+# マリガンする。生物学プロジェクトと星霊交信とねりけ1枚はキープ
+system.mulligan({"Astral Communion"=>1,"Biology Project"=>1,"Innervate"=>1})
 
 # マリガン後のハンドを表示
 puts "*** show hand after mulligan ***"
