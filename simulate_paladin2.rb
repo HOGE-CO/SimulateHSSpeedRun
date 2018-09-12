@@ -1,5 +1,5 @@
 # coding: utf-8
-# 5ターン目まで粘る場合
+# リセットポイントを4ターン目までにしておく
 require_relative './classes/system.rb'
 require_relative './classes/simulator.rb'
 require 'thwait'
@@ -126,7 +126,7 @@ def check_hand(system, turn_no)
             return false
         end
         # 持ってなきゃいけない
-        if !system.has_card?({"Doomsayer"=>1})
+        if !system.has_card?({"Doomsayer"=>1, "Prismatic Lens"=>1})
             return false
         end
     when 4
@@ -136,7 +136,7 @@ def check_hand(system, turn_no)
             return false
         end
         # 持ってなきゃいけない
-        if !system.has_card?({"Prismatic Lens"=>1})
+        if !system.has_card?({"Prismatic Lens"=>2})
             return false
         end
     when 5
@@ -145,8 +145,7 @@ def check_hand(system, turn_no)
             return false
         end
         # 持ってなきゃいけない
-        if !system.has_card?({"Skulking Geist"=>1}) ||
-        !system.has_card?({"Prismatic Lens"=>1})
+        if !system.has_card?({"Skulking Geist"=>1, "Prismatic Lens"=>1})
             return false
         end
     end
@@ -179,7 +178,7 @@ threads = []
 
 #puts Time.now #シミュレーション開始時間
 
-12.times do
+1.times do
     threads << Thread.new { proc.call }
 end
 
