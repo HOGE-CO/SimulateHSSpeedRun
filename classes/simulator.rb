@@ -8,11 +8,19 @@ class Simulator
         TIME_MECHATHUN = 8000 #メックトーンの死亡演出時間
     end
 
+    module Test
+        TEST_SUCCESS_COUNT_MAX = 1000 #この回数完走するまでやめない
+    end
+
     def initialize
         @result = []
         @try_total_count = 0
         @try_total_time = 0
         @is_locked = false
+    end
+
+    def get_test_try_count
+        return @result.size
     end
 
     def record_result(result)

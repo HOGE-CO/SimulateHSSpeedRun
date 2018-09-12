@@ -1,6 +1,7 @@
 # coding: utf-8
 require_relative './classes/system.rb'
 require_relative './classes/simulator.rb'
+require 'thwait'
 DECK_PATH = './data/sample_deck.json'
 
 # 進行を定義する
@@ -149,11 +150,24 @@ simulator = Simulator.new
 system = System.new
 system.import_deck(DECK_PATH)
 
-while true
-    copy_system = Marshal.load(Marshal.dump(system))
-    if game_proc(simulator, copy_system)
-        simulator.show_result
-        puts "clear!!!"
-        break
+proc = Proc.new do
+    while true
+        break if simulator.get_test_try_count >= Simulator::Test::TEST_SUCCESS_COUNT_MAX
+        copy_system = Marshal.load(Marshal.dump(system))
+        game_proc(simulator, copy_system)
     end
 end
+
+threads = []
+
+puts Time.now #シミュレーション開始時間
+
+12.times do
+    threads << Thread.new { proc.call }
+end
+
+ThreadsWait.all_waits(*threads)
+
+#simulator.show_result
+
+puts Time.now #シミュレーション終了時間
