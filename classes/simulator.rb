@@ -4,12 +4,12 @@ class Simulator
         TIME_RESTART = 20000 #リスタート所要時間
         TIME_MULLIGAN = 10000 #マリガンにかかる時間
         TIME_DRAW_CARD = 3000 #自分のターン開始からカードを引き終わるまでの時間
-        TIME_PLAY_TURN_AND_ENEMY_TURN = 12000 #カードを引き終わってから次のターン開始までにかかる時間
-        TIME_MECHATHUN = 8000 #メックトーンの死亡演出時間
+        TIME_PLAY_TURN_AND_ENEMY_TURN = 15000 #カードを引き終わってから次のターン開始までにかかる時間
+        TIME_MECHATHUN = 10000 #メックトーンの死亡演出時間
     end
 
     module Test
-        TEST_SUCCESS_COUNT_MAX = 10000 #この回数完走するまでやめない
+        TEST_SUCCESS_COUNT_MAX = 1 #この回数完走するまでやめない
     end
 
     def initialize
