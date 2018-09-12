@@ -17,7 +17,7 @@ class System
             begin
                 raise CardsNumError if array.size != 30
                 array.each do |hash|
-                    card = Card.new(hash['name'], hash['cost'], hash['type'])
+                    card = Card.new(hash["name"], hash["cost"], hash["type"])
                     @deck << card
                 end
             rescue => e
@@ -89,6 +89,40 @@ class System
         @deck << change_card_list
         @deck.flatten!
         shuffle_deck
+    end
+
+    # ハンドにcard_infoのすべてを持っているかどうかを返す。持ってたらtrue
+    def has_card?(card_info)
+        @hand.each do |card|
+            if card_info.has_key?(card.name)
+                card_info[card.name] -= 1
+            end
+        end
+
+        return true if card_info.values.all?{|elem| elem==0}
+        return false
+    end
+
+    # ハンドからカードを使う
+    def use_card(card_info)
+        begin
+            card_info.each do |card_name, num|
+                if has_card?({card_name=>num})
+                    @hand.delete_if{|card| card.name==card_name}
+                else
+                    raise CardNotFoundError
+                end
+            end
+        rescue => e
+            puts "エラー！エラー！指定のカードがないぞ！#{e}"
+        end
+    end
+
+    # vsドルイドだとデッキ、ハンド、場の3マナ以下のミニオンがすべて除外される
+    # 場は無視
+    def remove_all_less_3_costs_minions
+        @hand.delete_if{|card| card.cost <= 3 && card.type == Card::Type::MINION}
+        @deck.delete_if{|card| card.cost <= 3 && card.type == Card::Type::MINION}
     end
 
     def show_hand
