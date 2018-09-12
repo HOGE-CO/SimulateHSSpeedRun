@@ -107,8 +107,11 @@ class System
     def use_card(card_info)
         begin
             card_info.each do |card_name, num|
-                if has_card?({card_name=>num})
-                    @hand.delete_if{|card| card.name==card_name}
+                if @hand.find_all{|card| card.name==card_name}.size >= num
+                    num.times do
+                        index = @hand.find_index{|card| card.name==card_name}
+                        @hand.delete_at(index)
+                    end
                 else
                     raise CardNotFoundError
                 end
