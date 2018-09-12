@@ -20,11 +20,14 @@ class System
                     card = Card.new(hash['name'], hash['cost'], hash['type'])
                     @deck << card
                 end
-                @deck.shuffle!
             rescue => e
                 puts "エラー！エラー！デッキ枚数が足りないぞ！#{e}"
             end
         end
+    end
+
+    def shuffle_deck
+        @deck.shuffle!
     end
 
     def draw_card
@@ -35,6 +38,7 @@ class System
     end
 
     def create_first_hand(cards = nil)
+        shuffle_deck
         begin
             if cards == nil
                 3.times do
@@ -84,7 +88,7 @@ class System
         # 変更したカードをデッキの底に戻してシャッフル
         @deck << change_card_list
         @deck.flatten!
-        @deck.shuffle!
+        shuffle_deck
     end
 
     def show_hand
