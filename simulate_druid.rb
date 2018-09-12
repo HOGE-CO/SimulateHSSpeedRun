@@ -160,7 +160,7 @@ end
 
 threads = []
 
-puts Time.now #シミュレーション開始時間
+#puts Time.now #シミュレーション開始時間
 
 12.times do
     threads << Thread.new { proc.call }
@@ -170,4 +170,6 @@ ThreadsWait.all_waits(*threads)
 
 #simulator.show_result
 
-puts Time.now #シミュレーション終了時間
+#puts Time.now #シミュレーション終了時間
+
+simulator.show_statistics

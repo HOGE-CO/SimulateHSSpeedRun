@@ -9,7 +9,7 @@ class Simulator
     end
 
     module Test
-        TEST_SUCCESS_COUNT_MAX = 1000 #この回数完走するまでやめない
+        TEST_SUCCESS_COUNT_MAX = 10000 #この回数完走するまでやめない
     end
 
     def initialize
@@ -49,5 +49,23 @@ class Simulator
         @result.each do |result|
             puts result
         end
+    end
+
+    # 記録時間と平均リトライ数、完走確率、完走までにかかった時間の平均を表示
+    def show_statistics
+        time = 0
+        retry_count = 0
+        complete_rate = 0
+        need_time_ave = 0
+        @result.each do |result|
+            time = result["time"]
+            retry_count += result["try_total_count"]
+            need_time_ave += result["try_total_time"]
+        end
+        complete_rate = 100.0 * Test::TEST_SUCCESS_COUNT_MAX / retry_count
+        need_time_ave /= Test::TEST_SUCCESS_COUNT_MAX
+        puts "time: #{time}[ms]"
+        puts "complete rate: #{complete_rate}[%]"
+        puts "average time: #{need_time_ave}[ms]"
     end
 end
