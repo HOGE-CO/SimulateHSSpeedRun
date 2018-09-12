@@ -6,29 +6,33 @@ DECK_PATH = './data/sample_deck.json'
 # 進行を定義する
 def game_proc(simulator, system)
     # この対戦にかかった時間を記録
-    time = 0
+    time = Simulator::RunTime::TIME_RESTART
 
     # ロード済みのデッキ情報をまるっとコピー
     game_system = Marshal.load(Marshal.dump(system))
 
     # 初手の決定
-    #system.create_first_hand
+    system.create_first_hand
     #system.create_first_hand(["Astral Communion","Biology Project","Runic Egg"])
-    system.create_first_hand(["Astral Communion","Snowflipper Penguin","Runic Egg"])
+    #system.create_first_hand(["Astral Communion","Snowflipper Penguin","Runic Egg"])
 
     # マリガン
     system.mulligan({"Astral Communion"=>1,"Biology Project"=>1,"Innervate"=>1,"Runic Egg"=>1})
 
+    time += Simulator::RunTime::TIME_MULLIGAN
+
     # マリガン後の手札を確認、持ってちゃいけないものを持っていたらリセット
-    system.show_hand
+    #system.show_hand
     if !check_hand(system, 0)
         record_failed(simulator, time)
         return false
     end
 
+    time += Simulator::RunTime::TIME_DRAW_CARD
+
     # 1ターン目のカードドロー後のハンドを確認
     system.draw_card
-    system.show_hand
+    #system.show_hand
     if !check_hand(system, 1)
         record_failed(simulator, time)
         return false
@@ -48,9 +52,12 @@ def game_proc(simulator, system)
         system.remove_all_less_3_costs_minions
     end
 
+    time += Simulator::RunTime::TIME_PLAY_TURN_AND_ENEMY_TURN
+    time += Simulator::RunTime::TIME_DRAW_CARD
+
     # 2ターン目のカードドローの後のハンドを確認
     system.draw_card
-    system.show_hand
+    #system.show_hand
     if !check_hand(system, 2)
         record_failed(simulator, time)
         return false
@@ -59,13 +66,20 @@ def game_proc(simulator, system)
     # カードを全部使う
     system.use_card({"Astral Communion"=>1,"Biology Project"=>1,"Innervate"=>1})
 
+    time += Simulator::RunTime::TIME_PLAY_TURN_AND_ENEMY_TURN
+    time += Simulator::RunTime::TIME_DRAW_CARD
+
     # 3ターン目のカードドローの後のハンドを確認
     system.draw_card
-    system.show_hand
+    #system.show_hand
     if !check_hand(system, 3)
         record_failed(simulator, time)
         return false
     end
+
+    time += Simulator::RunTime::TIME_PLAY_TURN_AND_ENEMY_TURN
+    time += Simulator::RunTime::TIME_DRAW_CARD
+    time += Simulator::RunTime::TIME_MECHATHUN
 
     # 4ターン目は揃ってるはずなので必要カードを使って終わり
     simulator.record_result({"time"=>time})
@@ -135,11 +149,11 @@ simulator = Simulator.new
 system = System.new
 system.import_deck(DECK_PATH)
 
-copy_system = Marshal.load(Marshal.dump(system))
-
-if game_proc(simulator, copy_system)
-    simulator.show_result
-    puts "clear!!!"
-else
-    puts "failed..."
+while true
+    copy_system = Marshal.load(Marshal.dump(system))
+    if game_proc(simulator, copy_system)
+        simulator.show_result
+        puts "clear!!!"
+        break
+    end
 end
