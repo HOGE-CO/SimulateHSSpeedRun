@@ -9,7 +9,7 @@ class Simulator
     end
 
     module Test
-        TEST_SUCCESS_COUNT_MAX = 1 #この回数完走するまでやめない
+        TEST_SUCCESS_COUNT_MAX = 10000 #この回数完走するまでやめない
     end
 
     def initialize
