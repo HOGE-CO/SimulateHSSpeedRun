@@ -76,7 +76,7 @@ def game_proc(simulator, system)
     system.use_card({"Prismatic Lens"=>1})
     minion, spell = system.draw_minion_and_spell
     time += Simulator::RunTime::TIME_DRAW_CARD * 2
-    if !minion.is("Skulking Geist") || spell.is("Equality")
+    if !minion.is("Skulking Geist") || spell.is("Equality") || spell.is("Prismatic Lens")
         record_failed(simulator, time)
         return false
     end
