@@ -9,7 +9,7 @@ class Simulator
     end
 
     module Test
-        TEST_SUCCESS_COUNT_MAX = 10000 #この回数完走するまでやめない
+        TEST_SUCCESS_COUNT_MAX = 100000 #この回数完走するまでやめない
     end
 
     def initialize
@@ -67,5 +67,13 @@ class Simulator
         puts "time: #{time}[ms]"
         puts "complete rate: #{complete_rate}[%]"
         puts "average time: #{need_time_ave}[ms]"
+    end
+
+    # グラフで見るためにcsv形式で吐き出す
+    def puts_result_csv
+        puts "try_total_count,try_total_time"
+        @result.each do |result|
+            puts "#{result["try_total_count"]},#{result["try_total_time"]/1000.0/60.0}"
+        end
     end
 end

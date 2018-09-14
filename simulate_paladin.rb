@@ -189,4 +189,5 @@ ThreadsWait.all_waits(*threads)
 
 #puts Time.now #シミュレーション終了時間
 
-simulator.show_statistics
+#simulator.show_statistics
+simulator.puts_result_csv
