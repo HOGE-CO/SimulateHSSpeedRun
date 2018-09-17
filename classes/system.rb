@@ -99,6 +99,18 @@ class System
             end
         end
 
+        return true if card_info.values.all?{|elem| elem==0}
+        return false
+    end
+
+    # ハンドにcard_infoのカードを持っているかを返す。上とは違い1枚指定で2枚持っててもOK。持ってたらtrue
+    def has_card_at_least?(card_info)
+        @hand.each do |card|
+            if card_info.has_key?(card.name)
+                card_info[card.name] -= 1
+            end
+        end
+
         return true if card_info.values.all?{|elem| elem<=0}
         return false
     end

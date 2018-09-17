@@ -83,7 +83,7 @@ def check_hand(system, turn_no)
         return true
     when 1
         # 持ってなきゃいけない
-        if !system.has_card?({"Mana Bind"=>1,"Kabal Lackey"=>1,"Molten Giant"=>1})
+        if !system.has_card_at_least?({"Mana Bind"=>1,"Kabal Lackey"=>1,"Molten Giant"=>1})
             return false
         end
     when 2
@@ -94,18 +94,18 @@ def check_hand(system, turn_no)
     when 3
         # 持ってなきゃいけない
         # 相手の足止めが可能なカード
-        if system.has_card?({"Freezing Potion"=>1}) ||
-        system.has_card?({"Breath of Sindragosa"=>1}) ||
-        system.has_card?({"Ice Lance"=>1}) ||
-        system.has_card?({"Mirror Image"=>1}) ||
-        system.has_card?({"Flamecannon"=>1}) ||
-        system.has_card?({"Frostbolt"=>1}) ||
-        system.has_card?({"Snap Freeze"=>1}) ||
-        system.has_card?({"Shieldbearer"=>1}) ||
-        system.has_card?({"Wax Elemental"=>1}) ||
-        system.has_card?({"Annoy-o-Tron"=>1}) ||
-        system.has_card?({"Silverback Patriarch"=>1}) ||
-        system.has_card?({"Tar Creeper"=>1})
+        if system.has_card_at_least?({"Freezing Potion"=>1}) ||
+        system.has_card_at_least?({"Breath of Sindragosa"=>1}) ||
+        system.has_card_at_least?({"Ice Lance"=>1}) ||
+        system.has_card_at_least?({"Mirror Image"=>1}) ||
+        system.has_card_at_least?({"Flamecannon"=>1}) ||
+        system.has_card_at_least?({"Frostbolt"=>1}) ||
+        system.has_card_at_least?({"Snap Freeze"=>1}) ||
+        system.has_card_at_least?({"Shieldbearer"=>1}) ||
+        system.has_card_at_least?({"Wax Elemental"=>1}) ||
+        system.has_card_at_least?({"Annoy-o-Tron"=>1}) ||
+        system.has_card_at_least?({"Silverback Patriarch"=>1}) ||
+        system.has_card_at_least?({"Tar Creeper"=>1})
             return true
         else
             return false
