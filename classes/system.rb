@@ -99,7 +99,7 @@ class System
             end
         end
 
-        return true if card_info.values.all?{|elem| elem==0}
+        return true if card_info.values.all?{|elem| elem<=0}
         return false
     end
 
