@@ -107,8 +107,11 @@ class System
     def use_card(card_info)
         begin
             card_info.each do |card_name, num|
-                if has_card?({card_name=>num})
-                    @hand.delete_if{|card| card.name==card_name}
+                if @hand.find_all{|card| card.name==card_name}.size >= num
+                    num.times do
+                        index = @hand.find_index{|card| card.name==card_name}
+                        @hand.delete_at(index)
+                    end
                 else
                     raise CardNotFoundError
                 end
@@ -123,6 +126,27 @@ class System
     def remove_all_less_3_costs_minions
         @hand.delete_if{|card| card.cost <= 3 && card.type == Card::Type::MINION}
         @deck.delete_if{|card| card.cost <= 3 && card.type == Card::Type::MINION}
+    end
+
+    # プリズムレンズの効果でデッキからミニオンとスペルを1枚ずつ選んでドロー
+    def draw_minion_and_spell
+        begin
+            minion = @deck.find{|card| card.type==Card::Type::MINION}
+            spell = @deck.find{|card| card.type==Card::Type::SPELL}
+            if minion != nil && spell != nil
+                @hand << minion
+                @hand << spell
+                minion_index = @deck.find_index{|card| card == minion}
+                @deck.delete_at(minion_index)
+                spell_index = @deck.find_index{|card| card == spell}
+                @deck.delete_at(spell_index)
+                return minion, spell
+            else
+                raise CardNotFoundError
+            end
+        rescue => e
+            puts "エラー！エラー！引こうとしたミニオンかスペルがないぞ！#{e}"
+        end
     end
 
     def show_hand
